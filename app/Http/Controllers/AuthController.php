@@ -21,4 +21,19 @@ class AuthController extends Controller
     {
         return view('homepage');
     }
+
+    public function cart()
+    {
+        return view('cart');
+    }
+
+    public function product()
+    {
+        return view('product');
+    }
+
+    public function detailproduct()
+    {
+        return view('detail-product');
+    }
 }

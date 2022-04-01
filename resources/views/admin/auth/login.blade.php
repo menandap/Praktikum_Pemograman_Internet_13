@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col-sm-6 login-section-wrapper">
           <div class="brand-wrapper">
-            <h1>Hexa Shop</h1>
+            <h1>Coza Store</h1>
           </div>
           <div class="login-wrapper my-auto">
             <h1 class="login-title">Log in Admin</h1>

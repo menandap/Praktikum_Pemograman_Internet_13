@@ -19,7 +19,7 @@
             <h5>
               <a href="{{route('home')}}" class="text-reset">Back</a>
             </h5>
-            <h1>Hexa Shop</h1>
+            <h1>Coza Store</h1>
           </div>
           <div class="login-wrapper my-auto">
             <h1 class="login-title">Log in</h1>
