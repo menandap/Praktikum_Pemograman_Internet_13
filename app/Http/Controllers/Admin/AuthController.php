@@ -9,9 +9,10 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    
     public function index()
     {
-        view('admin.home');
+        view('homepage');
     }
     
     public function store(Request $requests)
