@@ -14,14 +14,13 @@ class CreateResponsesTable extends Migration
     public function up()
     {
         Schema::create('responses', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('review_id');
-            $table->foreignId('admin_id');
+            $table->increments('id');
+            $table->integer('review_id')->unsigned();
+            $table->foreign('review_id')->references('id')->on('product_reviews')->onDelete('cascade');
+            $table->integer('admin_id')->unsigned();
+            $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
             $table->text('content');
             $table->timestamps();
-
-            $table->foreign('review_id')->references('id')->on('product_reviews')->onDelete('cascade');
-            $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
         });
     }
 

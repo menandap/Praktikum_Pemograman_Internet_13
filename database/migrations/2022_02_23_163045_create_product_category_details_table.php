@@ -14,22 +14,12 @@ class CreateProductCategoryDetailsTable extends Migration
     public function up()
     {
         Schema::create('product_category_details', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('product_id')
-                    ->constrained('products')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
-            $table->foreignId('category_id')
-                    ->constrained('product_categories')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
-            // $table->foreignId('product_id');
-            // $table->foreignId('category_id');
-
-            // $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            // $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');
-            // $table->timestamps();
-
+            $table->increments('id');
+            $table->integer('product_id')->unsigned();
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->integer('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

@@ -15,6 +15,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware(['auth:admin'])->group(function () {
         Route::view('/home', 'admin.home')->name('home');
         Route::view('/dummy', 'admin.dummy')->name('dummy');
+        
         Route::get('/logout', [AuthController::class, 'destroy'])->name('logout');
     });
 });

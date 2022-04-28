@@ -14,13 +14,26 @@ class CreateCitiesTable extends Migration
     public function up()
     {
         Schema::create('cities', function (Blueprint $table) {
-            $table->id();
-            $table->string('province_id', 20);
+            $table->increments('id');
+            $table->integer('province_id')->unsigned();
+            $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
+
+            // $table->foreignId('province_id')->constrained('provinces');
+            // $table->foreignId('province_id')
+            //         ->constrained('provinces')
+            //         ->onUpdate('cascade')
+            //         ->onDelete('cascade');
             // $table->string('province', 120)->nullable();
-            $table->string('type', 60)->nullable();
-            $table->string('city_name', 128)->nullable();
-            $table->string('postal_code', 15)->nullable();
+            $table->string('type');
+            $table->string('city_name');
+            $table->string('postal_code');
             $table->timestamps();
+
+
+
+            // $table->integer('peminjam_id')->unsigned();
+            // $table->foreign('peminjam_id')->references('id')->on('peminjam')->onDelete('cascade');
+
         });
     }
 

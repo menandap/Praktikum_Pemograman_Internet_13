@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+
 
 class Admin extends Authenticatable
 {
@@ -16,12 +18,14 @@ class Admin extends Authenticatable
      *
      * @var array<int, string>
      */
+    use HasFactory;
+    protected $table = "admins";
     protected $fillable = [
         'username',
-        'name',
         'password',
-        'phone',
+        'name',
         'profile_image',
+        'phone',
     ];
 
     /**
@@ -42,4 +46,10 @@ class Admin extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function down()
+    {
+        Schema::dropIfExists('admins');
+    }
+
 }

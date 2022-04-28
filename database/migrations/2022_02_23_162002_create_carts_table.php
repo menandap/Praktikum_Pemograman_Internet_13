@@ -14,24 +14,14 @@ class CreateCartsTable extends Migration
     public function up()
     {
         Schema::create('carts', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')
-                    ->constrained('users')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
-            $table->foreignId('product_id')
-                    ->constrained('products')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
-            // $table->foreignId('user_id');
-            // $table->foreignId('product_id');
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('product_id')->unsigned();
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->integer('qty')->default(0);
             // $table->enum('status',['berhasil','preloved']);
             $table->timestamps();
-
-            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            // $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
-            // $table->timestamps();
         });
     }
 

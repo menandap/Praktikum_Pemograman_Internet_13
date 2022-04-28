@@ -14,24 +14,16 @@ class CreateTransactionDetailsTable extends Migration
     public function up()
     {
         Schema::create('transaction_details', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('transaction_id')
-                    ->constrained('transactions')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
-            $table->foreignId('product_id')
-                    ->constrained('products')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
-            // $table->foreignId('transaction_id');
-            // $table->foreignId('product_id')->nullable();
+            $table->increments('id');
+            $table->integer('transaction_id')->unsigned();
+            $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
+            
+            $table->integer('product_id')->unsigned();
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->integer('qty');
             $table->integer('discount')->nullable();
             $table->integer('selling_price');
             $table->timestamps();
-
-            // $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
-            // $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
         });
     }
 

@@ -14,7 +14,7 @@ class CreateCouriersTable extends Migration
     public function up()
     {
         Schema::create('couriers', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('courier', 191);
             $table->timestamps();
         });

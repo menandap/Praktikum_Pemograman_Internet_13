@@ -25,3 +25,8 @@ Route::get('/product', [AuthController::class, 'product'])->middleware('auth')->
 
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
+
+Route::resource('admin', 'AdminController');
+Route::resource('user', 'UserController');
+Route::resource('productcontroller', 'ProductCategoriesController');
+
