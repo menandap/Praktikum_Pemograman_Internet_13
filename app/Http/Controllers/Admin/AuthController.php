@@ -9,6 +9,10 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    public function dashboard()
+    {
+        return view('pages.admins.dashboard.index');
+    }
     
     public function index()
     {
@@ -23,7 +27,7 @@ class AuthController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
 
     public function dummy()
@@ -35,6 +39,6 @@ class AuthController extends Controller
     {
         Auth::guard('admin')->logout();
 
-        return redirect()->route('admin.login');
+        return redirect()->route('admin.dashboard');
     }
 }

@@ -4,23 +4,18 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
+// Route::prefix('user')->name('user.')->group(function () {
+   
+// });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/homeproduct', [HomeController::class, 'product'])->name('homeproduct');
+Route::get('/product', [HomeController::class, 'product'])->name('homeproduct');
+Route::get('/product/{id}', [HomeController::class, 'detail_product'])->name('homeproductdetail');
 Route::get('/home', [AuthController::class, 'homepage'])->middleware('auth')->name('homepage');
-Route::get('/cart', [AuthController::class, 'cart'])->middleware('auth')->name('cart');
-Route::get('/product', [AuthController::class, 'product'])->middleware('auth')->name('product');
+Route::get('/usr-cart', [AuthController::class, 'cart'])->middleware('auth')->name('cart');
+Route::get('/usr-product', [AuthController::class, 'product'])->middleware('auth')->name('product');
+Route::get('/usr-product/{id}', [AuthController::class, 'detail_product'])->middleware('auth')->name('detail_product');
 
 
 require __DIR__.'/auth.php';

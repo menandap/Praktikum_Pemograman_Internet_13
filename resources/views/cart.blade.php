@@ -1,5 +1,5 @@
 @extends ('layout')
-@section('pageTitle', 'Cart')
+@section('title', 'Cart')
 @section ('body')
 
     <!-- breadcrumb -->

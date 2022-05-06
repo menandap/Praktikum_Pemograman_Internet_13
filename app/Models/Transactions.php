@@ -28,4 +28,11 @@ class Transactions extends Model
         'status'
     ];
 
+    public function couriers() { 
+        return $this->hasMany(Couriers::class);
+    }
+
+    public function user() { 
+        return $this->hasMany(User::class);
+    }
 }

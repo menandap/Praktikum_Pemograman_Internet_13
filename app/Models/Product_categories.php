@@ -13,5 +13,12 @@ class Product_categories extends Model
         'category_name'
     ];
 
+    public function product_category_details() { 
+        return $this->hasMany(Product_category_details::class, 'category_id', 'id');
+    }   
+
+    public function product(){
+        return $this->belongsToMany(Product::class, 'product_category_details', 'category_id', 'product_id')->withPivot('id');
+    }
 
 }

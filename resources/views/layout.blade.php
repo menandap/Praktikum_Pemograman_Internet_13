@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<title>
+		@yield('title')
+	</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -33,8 +36,23 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('css/util.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('css/main.css')}}">
 <!--===============================================================================================-->
+	 <!--Import Google Icon Font-->
+ 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!--Import materialize.css-->
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </head>
 <body class="animsition">
+
+	 <!--JavaScript at end of body for optimized loading-->
+	 <script type="text/javascript" src="js/materialize.min.js"></script>
 	
 	<!-- Header -->
 	<header class="header-v4">
@@ -45,7 +63,7 @@
 					
 					<!-- Logo desktop -->		
 					<a href="#" class="logo">
-						<img src="images/icons/logo-01.png" alt="IMG-LOGO">
+						<img src="/images/icons/logo-01.png" alt="IMG-LOGO">
 					</a>
 
 					<!-- Menu desktop -->
@@ -72,43 +90,55 @@
 							@endif
 
 							<li class="label1" data-label1="hot">
-								<a href="{{ route('cart') }}">Features</a>
+								<a href="{{ route('cart') }}">Your Cart</a>
 							</li>
-
-							@if (Auth::user())
-                                <li class="scroll-to-section"><a href="{{ route('logout') }}"" onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit()">Log out</a></li>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            @else
-								<li class="submenu"><a href="{{route('login')}}">Login</a></li>
-							@endif
 						</ul>
 					</div>	
 
 					<!-- Icon header -->
 					<div class="wrap-icon-header flex-w flex-r-m">
-						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+						<div class="p-r-11 p-lr-11 icon-header-item cl2 hov-cl1 trans-04 js-show-modal-search">
 							<i class="zmdi zmdi-search"></i>
 						</div>
 
 						@if (Auth::user())
-						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="2">
+						<div class="p-r-11 p-lr-11 icon-header-item cl2 hov-cl1 trans-04 icon-header-noti js-show-cart" data-notify="2">
 							<i class="zmdi zmdi-shopping-cart"></i>
 						</div>
 						@else
-						<a href="{{route('login')}}" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
+						<a href="{{route('login')}}" class="p-r-11 p-lr-11 dis-block icon-header-item cl2 hov-cl1 trans-04 icon-header-noti" data-notify="0">
 							<i class="zmdi zmdi-shopping-cart"></i>
 						</a>
 						@endif
 
-						<div class="flex-c-m h-full p-lr-19">
-							<div class="icon-header-item cl2 hov-cl1 trans-04 p-lr-11 js-show-sidebar">
+						<div class="flex-c-m h-full p-r-11 p-lr-11">
+							<div class="icon-header-item cl2 hov-cl1 trans-04 js-show-sidebar">
 								<i class="zmdi zmdi-menu"></i>
 							</div>
 						</div>
+
+						<ul class="icon-header-item main-menu">
+							<li class="active-menu">
+								<i class="fa fa-user"></i>
+								@if (Auth::user())
+								<!-- <span class="d-sm-inline d-none">Nama User</span> -->
+								<ul class="sub-menu">
+										<li class="scroll-to-section"><a href="{{ route('logout') }}" onclick="event.preventDefault();
+											document.getElementById('logout-form').submit()">Log out</a></li>
+
+										<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+											@csrf
+										</form>
+								</ul>
+								@else
+								<!-- <span class="d-sm-inline d-none">Non User</span> -->
+								<ul class="sub-menu">
+										<li class="submenu"><a href="{{route('login')}}">Login</a></li>
+								</ul>
+								@endif
+							</li>
+						</ul>
+
 					</div>
 				</nav>
 			</div>	

@@ -17,4 +17,7 @@ class User_notifications extends Model
         'read_at'
     ];
 
+    public function users() { 
+        return $this->belongsTo(User::class, 'notifiable_id');
+    }
 }
