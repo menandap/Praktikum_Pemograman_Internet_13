@@ -52,4 +52,13 @@ class Admin extends Authenticatable
         Schema::dropIfExists('admins');
     }
 
+    
+    public function admin_notifications() {
+        return $this->hasMany(Admin_notifications::class);
+      }
+  
+      public function response() {
+        return $this->hasMany(Responses::class);
+      }
+
 }

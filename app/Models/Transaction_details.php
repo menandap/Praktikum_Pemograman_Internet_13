@@ -17,4 +17,11 @@ class Transaction_details extends Model
         'selling_price'
     ];
 
+    public function products() { 
+        return $this->belongsTo(Product::class);
+    }
+
+    public function transactions() { 
+        return $this->belongsTo(Transactions::class);
+    }
 }

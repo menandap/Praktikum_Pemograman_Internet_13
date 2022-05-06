@@ -17,4 +17,8 @@ class Admin_notifications extends Model
         'read_at'
     ];
 
+    public function admins() { 
+        return $this->belongsTo(Admin::class);
+      }
+
 }
