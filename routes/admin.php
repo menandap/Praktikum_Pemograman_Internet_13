@@ -18,8 +18,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::middleware(['auth:admin'])->group(function () {
         Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
-        Route::view('/home',[AuthController::class, 'home'])->name('home');
-        Route::view('/dummy', [AuthController::class, 'dummy'])->name('dummy');
+        Route::get('/home',[AuthController::class, 'dashboard']);
+        Route::get('/dummy', [AuthController::class, 'dummy'])->name('dummy');
 
         Route::get('/categories', [CategoryController::class, 'index'])->name('category');
         Route::get('/categories/create', [CategoryController::class, 'create']);

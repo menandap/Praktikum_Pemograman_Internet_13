@@ -21,12 +21,6 @@
                                     </div>
                                 </div>
                                 <div class="col-lg">
-                                    <div class="input-group input-group-static my-3">
-                                        <label>Product ID</label>
-                                        <input type="text" id="" class="form-control" name="product_id" value="{{$products->id}}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-lg">
                                     <div class="input-group input-group-static @error('percentage') is-invalid @enderror my-3">                                    
                                         <label>Persentase Diskon :</label>
                                         <input type="text" class="form-control" placeholder="Persentase" name="percentage" value="{{$discounts->percentage}}">

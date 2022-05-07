@@ -20,20 +20,6 @@
                                         <a class="btn bg-gradient-warning mb-0" href="{{ route('admin.productdetail', $stoks->product_id) }}"><i class="material-icons text-sm">arrow_back</i>&nbsp;&nbsp;Back</a>
                                     </div>
                                 </div>
-                                <div class="col-lg">
-                                    <div class="input-group input-group-static my-3">
-                                        <label>Product ID</label>
-                                        <input type="text" id="" class="form-control" name="product_id" value="{{$stoks->product_id}}" readonly>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg">
-                                    <div class="input-group input-group-static my-3">                                    
-                                        <label>ID </label>
-                                        <input type="text" class="form-control" placeholder="Banyak Satuan" name="stok_id" value="{{ $stoks->stok_id}}" readonly>
-                                    </div>
-                                </div>    
-
                                <div class="col-lg">
                                     <div class="input-group input-group-static my-3">
                                         <label class="form-control-label">Stok Name</label>

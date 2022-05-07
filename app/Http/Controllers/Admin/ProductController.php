@@ -255,24 +255,23 @@ class ProductController extends Controller
     }
 
     public function updateDiscount(Request $request, $id){
-        Discounts::find($id);
-        $diskon =  Discounts::find($id);
-        $diskon->delete();
-
-
         $this->validate($request, [
             'percentage' => 'required|numeric|max:100',
-        ]);   
+            'end' => 'required',
+            'start' => 'required',
+        ]);  
         
-        $discount = new Discounts;
-        $discount->percentage = $request->percentage;
-        $discount->product_id = $request->product_id;
-        $discount->start = $request->start;
-        $discount->end = $request->end;
-        if(!empty($request->percentage)) {
-            $discount->save();    
-        }
-        return redirect()->route('admin.productdetail', $discount->product_id);
+        $dicounts = [
+            'percentage' => $request->percentage,
+            'end' => $request->end,
+            'start' => $request->start
+        ];
+        Discounts::where('id',$id)->update($dicounts);
+        $diskon = DB::table('discounts')
+        ->select('product_id')
+        ->where('id','=',$id)
+        ->first();
+        return redirect()->route('admin.productdetail', $diskon->product_id);
     }
 
     public function deleteDiscount($id){
@@ -354,21 +353,19 @@ class ProductController extends Controller
     }
 
     public function updateStok(Request $request, $id){
-        Product_stok_details::find($id);
-        $stoks =  Product_stok_details::find($id);
-        $stoks->delete();
-
         $this->validate($request,[
-             'stok' => 'required|numeric|min:0',
+            'stok' => 'required|numeric|min:0',
         ]);
-        
-        $stokDetail = new Product_stok_details;
-        $stokDetail->product_id = $request->product_id;
-        $stokDetail->stok_id = $request->stok_id;
 
-        $stokDetail->stok = $request->stok;
-        $stokDetail->save();
-        return redirect()->route('admin.productdetail', $stokDetail->product_id);
+        $stokDetail = [
+            'stok' => $request->stok,
+        ];
+        Product_stok_details::where('id',$id)->update($stokDetail);
+        $stok = DB::table('product_stok_details')
+        ->select('product_id')
+        ->where('id','=',$id)
+        ->first();
+        return redirect()->route('admin.productdetail', $stok->product_id);
     }
 
     public function deleteStok($id){
