@@ -33,12 +33,13 @@
                                 <div class="input-group input-group-static @error('end') is-invalid @enderror my-3">
                                     <label>End :</label>
                                     <input type="date" class="form-control" name="end">
-                                </div>                                                                                      
+                                </div>     
                                 @if (count($errors) > 0)                                    
                                     @foreach ($errors->all() as $error)     
-                                        <p class="text-danger">{{$error}}</p>
+                                        <div class="text-danger display: inline">{{$error}}</div>
                                     @endforeach                                   
                                 @endif 
+                                </div>
                                 <br>          
                                 <div>
                                     <button class="btn btn-primary" type="submit">

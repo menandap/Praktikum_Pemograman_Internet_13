@@ -9,7 +9,7 @@
             <div class="grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <form class="form-signin" action="/admin/{{ $products->id }}/editDiscount" method="post" enctype="multipart/form-data">
+                        <form class="form-signin" action="/admin/{{ $discounts->id }}/editDiscount" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="card-header">
                                 <div class="row">
@@ -20,19 +20,25 @@
                                         <a class="btn bg-gradient-warning mb-0" href="{{ route('admin.productdetail', $products->id) }}"><i class="material-icons text-sm">arrow_back</i>&nbsp;&nbsp;Back</a>
                                     </div>
                                 </div>
-                                <div class="col-mb-4">
-                                    <div class="input-group input-group-static @error('discounts->percentage') is-invalid @enderror my-3">                                    
-                                        <label>Persentase Diskon :</label>
-                                        <input type="text" class="form-control" placeholder="Persentase" name="discounts->percentage" value="{{discounts->percentage}}">
+                                <div class="col-lg">
+                                    <div class="input-group input-group-static my-3">
+                                        <label>Product ID</label>
+                                        <input type="text" id="" class="form-control" name="product_id" value="{{$products->id}}" readonly>
                                     </div>
                                 </div>
-                                <div class="input-group input-group-static @error('discounts->start') is-invalid @enderror my-3">
+                                <div class="col-lg">
+                                    <div class="input-group input-group-static @error('percentage') is-invalid @enderror my-3">                                    
+                                        <label>Persentase Diskon :</label>
+                                        <input type="text" class="form-control" placeholder="Persentase" name="percentage" value="{{$discounts->percentage}}">
+                                    </div>
+                                </div>
+                                <div class="input-group input-group-static @error('start') is-invalid @enderror my-3">
                                     <label>Start :</label>
-                                    <input type="date" class="form-control" name="discounts->start" value="{{discounts->start}}">
+                                    <input type="date" class="form-control" name="start" value="{{$discounts->start}}">
                                 </div>  
-                                <div class="input-group input-group-static @error('discounts->end') is-invalid @enderror my-3">
+                                <div class="input-group input-group-static @error('end') is-invalid @enderror my-3">
                                     <label>End :</label>
-                                    <input type="date" class="form-control" name="discounts->end" value="{{discounts->end}}">
+                                    <input type="date" class="form-control" name="end" value="{{$discounts->end}}">
                                 </div>                                                                                      
                                 @if (count($errors) > 0)                                    
                                     @foreach ($errors->all() as $error)     

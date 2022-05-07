@@ -9,7 +9,7 @@
             <div class="grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <form class="form-signin" action="/admin/{{ $stoks->product_id }}/editStok" method="post" enctype="multipart/form-data">
+                        <form class="form-signin" action="/admin/{{ $stoks->id }}/editStok" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="card-header">
                                 <div class="row">
@@ -20,30 +20,31 @@
                                         <a class="btn bg-gradient-warning mb-0" href="{{ route('admin.productdetail', $stoks->product_id) }}"><i class="material-icons text-sm">arrow_back</i>&nbsp;&nbsp;Back</a>
                                     </div>
                                 </div>
-                                <!-- <div class="col-lg">
-                                    <div class="form-group">
-                                        <label class="form-control-label">Stok ID</label>
-                                        <input type="text" id="" class="form-control" value="{{$stoks->stok_id}}" disabled readonly>
-                                    </div>
-                                </div> -->
-
                                 <div class="col-lg">
-                                    <div class="input-group input-group-static">                                    
-                                        <label>ID:</label>
-                                        <input type="text" class="form-control" placeholder="Banyak Satuan" name="stok_id" value="{{ $stoks->stok_id }}" disabled readonly>
-                                    </div>
-                                </div> 
-
-                                <div class="col-lg">
-                                    <div class="input-group input-group-static">
-                                        <label class="form-control-label">Jenis Size</label>
-                                        <input type="text" id="" class="form-control" value="{{$stoks->stok_name}}" disabled readonly>
+                                    <div class="input-group input-group-static my-3">
+                                        <label>Product ID</label>
+                                        <input type="text" id="" class="form-control" name="product_id" value="{{$stoks->product_id}}" readonly>
                                     </div>
                                 </div>
+
+                                <div class="col-lg">
+                                    <div class="input-group input-group-static my-3">                                    
+                                        <label>ID </label>
+                                        <input type="text" class="form-control" placeholder="Banyak Satuan" name="stok_id" value="{{ $stoks->stok_id}}" readonly>
+                                    </div>
+                                </div>    
+
+                               <div class="col-lg">
+                                    <div class="input-group input-group-static my-3">
+                                        <label class="form-control-label">Stok Name</label>
+                                        <input type="text" id="" class="form-control" value="{{$stoks->stok_name}}" readonly>
+                                    </div>
+                                </div>
+
                              
                                 <div class="col-lg">
-                                    <div class="input-group input-group-static @error('stoks->stok') is-invalid @enderror my-3">                                    
-                                        <label>Stok :</label>
+                                    <div class="input-group input-group-static @error('stok') is-invalid @enderror my-3">                                    
+                                        <label>Stok </label>
                                         <input type="text" class="form-control" placeholder="Banyak Satuan" name="stok" value="{{ $stoks->stok }}">
                                     </div>
                                 </div>                                                                          

@@ -16,7 +16,7 @@ class AuthController extends Controller
     
     public function index()
     {
-        view('homepage');
+        view('pages.admins.dashboard.index');
     }
     
     public function store(Request $requests)

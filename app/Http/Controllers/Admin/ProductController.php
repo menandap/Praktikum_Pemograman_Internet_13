@@ -223,7 +223,6 @@ class ProductController extends Controller
     
     public function addDiscount($id){
         $products = Product::find($id);
-        // return  $products;
         return view('pages.admins.product.productadddiscount', compact('products','id'));
     }
 
@@ -233,14 +232,14 @@ class ProductController extends Controller
             ->join('products', 'products.id', '=', 'discounts.product_id')
             ->select('discounts.id','discounts.product_id','discounts.start','discounts.end','discounts.percentage')
             ->where('products.id', '=',$id)->first();
-
-        // return  $discounts;
         return view('pages.admins.product.producteditdiscount', compact('products','id','discounts'));
     }
 
     public function uploadDiscount(Request $request, $id){
         $this->validate($request, [
             'percentage' => 'required|numeric|max:100',
+            'end' => 'required',
+            'start' => 'required',
         ]);   
         
         $discount = new Discounts;
@@ -252,24 +251,28 @@ class ProductController extends Controller
             $discount->save();    
         }
         
-        return redirect()->back(); 
+        return redirect()->route('admin.productdetail', $discount->product_id);
     }
 
     public function updateDiscount(Request $request, $id){
+        Discounts::find($id);
+        $diskon =  Discounts::find($id);
+        $diskon->delete();
+
+
         $this->validate($request, [
             'percentage' => 'required|numeric|max:100',
         ]);   
         
         $discount = new Discounts;
         $discount->percentage = $request->percentage;
-        $discount->product_id = $id;
+        $discount->product_id = $request->product_id;
         $discount->start = $request->start;
         $discount->end = $request->end;
         if(!empty($request->percentage)) {
             $discount->save();    
         }
-        
-        return redirect()->back(); 
+        return redirect()->route('admin.productdetail', $discount->product_id);
     }
 
     public function deleteDiscount($id){
@@ -301,7 +304,7 @@ class ProductController extends Controller
             $categoryDetail->save();
         }
         
-        return redirect()->back(); 
+        return redirect()->route('admin.productdetail', $categoryDetail->product_id); 
     }
 
     public function deleteCategory($id){
@@ -330,7 +333,6 @@ class ProductController extends Controller
         ->join('products', 'products.id', '=', 'product_stok_details.product_id')
         ->select('product_stoks.stok_name', 'product_stok_details.stok_id', 'product_stok_details.id', 'product_stok_details.stok', 'product_stok_details.product_id')
         ->where('product_stok_details.id', '=', $id)->first();
-        // return $stoks;
         return view('pages.admins.product.producteditstok', compact('stoks'));
     }
 
@@ -347,35 +349,31 @@ class ProductController extends Controller
         }
 
         $stokDetail->stok = $request->stok;
-        // return $stokDetail;
         $stokDetail->save();
-        // return $stokDetail;
-        return redirect()->back(); 
+        return redirect()->route('admin.productdetail', $stokDetail->product_id); 
     }
 
     public function updateStok(Request $request, $id){
         Product_stok_details::find($id);
         $stoks =  Product_stok_details::find($id);
-        // $stoks->delete();
+        $stoks->delete();
 
-        // $this->validate($request,[
-        //     'stok' => 'required|numeric|min:0',
-        // ]);
+        $this->validate($request,[
+             'stok' => 'required|numeric|min:0',
+        ]);
         
-        // $stokDetail = new Product_stok_details;
-        // $stokDetail->product_id = $id;
-        // $stokDetail->stok_id = $request->stok_id;
+        $stokDetail = new Product_stok_details;
+        $stokDetail->product_id = $request->product_id;
+        $stokDetail->stok_id = $request->stok_id;
 
-        // $stokDetail->stok = $request->stok;
-        // $stokDetail->save();
-        return $stoks;
+        $stokDetail->stok = $request->stok;
+        $stokDetail->save();
         return redirect()->route('admin.productdetail', $stokDetail->product_id);
     }
 
     public function deleteStok($id){
         Product_stok_details::find($id);
         $stoks =  Product_stok_details::find($id);
-        // return $stoks;
         $stoks->delete();
         return redirect()->back(); 
     }
