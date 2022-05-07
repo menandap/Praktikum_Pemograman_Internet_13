@@ -115,7 +115,7 @@
                                 <div class="pt-3">
                                     <div class="col">
                                     @forelse($stoks as $stok)
-                                        <a class="btn bg-gradient-info mb-0">create</i>&nbsp;&nbsp;Size {{$stok->stok_name}} : {{$stok->stok}}</a>
+                                        <a class="btn bg-gradient-info mb-0" href="/admin/{{$stok->id}}/editStok"><i class="material-icons text-sm">create</i>&nbsp;&nbsp;Size {{$stok->stok_name}} : {{$stok->stok}}</a>
                                         <a onclick="return confirm('Apa yakin ingin menghapus stok ini?')" href="/admin/{{$stok->id}}/deleteStok"> <i class="material-icons text-sm">clear</i>&nbsp;&nbsp;</li> </a>                  
                                     @empty
                                             <a class="btn bg-gradient-secondary mb-0">No Stock</a>
@@ -158,7 +158,7 @@
                                  @foreach($discount as $discounts)                            
                                     @if($product->id == $discounts->product_id)
                                     <div class="col">
-                                        <a class="btn bg-gradient-danger mb-0">Product Discount : {{ $discounts->percentage }}% on {{ $discounts->start }} until {{ $discounts->end }}</a>
+                                        <a class="btn bg-gradient-danger mb-0" href="/admin/{{$product->id}}/editDiscount"><i class="material-icons text-sm">create</i>&nbsp;&nbsp;Product Discount : {{ $discounts->percentage }}% on {{ $discounts->start }} until {{ $discounts->end }}</a>
                                     <a onclick="return confirm('Apa yakin ingin menghapus diskon ini?')" href="/admin/{{$discounts->id}}/deleteDiscount"> <i class="material-icons text-sm">clear</i>&nbsp;&nbsp;</li> </a>                  
                                     </div>
                                     @php
