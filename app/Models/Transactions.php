@@ -12,13 +12,13 @@ class Transactions extends Model
     protected $fillable = [
         'user_id',
         'courier_id',
-        'city_id',
-        'province_id',
+        'regency',
+        'province',
         'timeout',
         'address',
         'total', 
         'shipping_cost',
-        'sub_total',
+        'subtotal',
         'proof_of_payment',
         'code',
         'slug',
@@ -28,11 +28,18 @@ class Transactions extends Model
         'status'
     ];
 
-    public function couriers() { 
-        return $this->hasMany(Couriers::class);
+    public function courier()
+    {
+        return $this->belongsTo(Couriers::class);
     }
 
+
     public function user() { 
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function transaction_detail()
+    {
+        return $this->hasMany(Transaction_details::class, "transaction_id");
     }
 }

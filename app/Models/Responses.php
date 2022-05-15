@@ -15,7 +15,7 @@ class Responses extends Model
         'content'
     ];
 
-    public function admins() { 
+    public function admin() { 
         return $this->belongsTo(Admin::class);
     }
 }

@@ -75,6 +75,12 @@ class HomeController extends Controller
         $discount = DB::table('discounts')
         ->select('discounts.*')
         ->get();
-        return view('detail_product', compact('products','reviews','responses', 'image','categories','id','discount','stoks'));
+        $reviews = Product_reviews::where('product_id', '=', $id)->paginate(5);
+        Paginator::useBootstrap();
+        // $tes = Product_reviews::count();
+        // if (!$tes) {
+        //     $tes = 0;
+        // }
+        return view('detail_product', compact('products','reviews','responses', 'image','categories','id','discount','stoks','reviews'));
     }
 }

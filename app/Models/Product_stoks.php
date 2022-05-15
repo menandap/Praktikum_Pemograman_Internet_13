@@ -13,8 +13,8 @@ class Product_stoks extends Model
         'stok_name'
     ];
 
-    public function product_stok_details() { 
-        return $this->hasMany(Product_stok_details::class, 'stok_id', 'id');
+    public function stok_details() { 
+        return $this->hasMany(Product_stok_details::class);
     }   
 
     public function product(){

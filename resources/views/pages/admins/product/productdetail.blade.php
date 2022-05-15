@@ -87,6 +87,17 @@
                             <div class="row">
                                 <div class="pt-3">
                                     <div class="col">
+                                    @php
+
+                                    $data = array();
+                                    foreach($categories as $category){
+                                        array_push($data, $category->category_name);
+                                    }
+
+                                    @endphp
+                                    @if(count($data) < 2)
+                                    <a class="btn bg-gradient-primary mb-0">Category : {{$category->category_name}}</a> 
+                                    @else
                                     @foreach($categories as $category)
                                         @if(!empty($category))
                                             <a class="btn bg-gradient-primary mb-0">Category : {{$category->category_name}}</a> 
@@ -95,6 +106,7 @@
                                             <a class="btn bg-gradient-secondary mb-0">No Category</a>
                                         @endif
                                     @endforeach
+                                    @endif
                                     </div>
                                 </div>                            
                             </div>
@@ -210,54 +222,64 @@
                                 </div>                                
                             </div>
                             <br>
-                            <div class="table-responsive">
+                            <div class="table-responsive"> 
+                                @php 
+                                $check=0;
+
+                                foreach($reviews as $review){
+                                    $check=1;
+                                }
+
+                                @endphp
+
+
+                                @if($check != 1)
+                                <div class="col-6 mt-4 mb-3">
+                                    <a class="btn bg-gradient-secondary mb-0">No Review Added in Product</a>
+                                </div>
+                                @else    
                                 <table class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
                                             <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2">No.</th>
+                                            <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2">User</th>
                                             <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2">Rating</th>
                                             <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2">Review</th>
                                             <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2">Response</th>
+                                            <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2">By Admin</th>
                                             <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach($reviews as $review)  
                                         <tr>
-                                            <td>1</td>
-                                            <td>*****</td>
-                                            <td>Mantap</td>
-                                            <td>Terima Kasih</td>
-                                            <td>                                                                                    
-                                                <!-- Button trigger modal -->
-                                                <button type="button" class="btn btn-sm btn-success lihat-review" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                    Balas
-                                                </button>
+                                            <td><p class="text-md font-weight-normal mb-0">{{ $reviews->firstItem()+$loop->index }}</p></th>
+                                            <td>{{$review->user->name}}</td>
+                                            <td>{{$review->rate}}/5</td>
+                                            <td>{{$review->content}}</td>
+                                            @php
+                                            $respon = App\Models\Responses::where('review_id', '=', $review->id)->first();
+                                            @endphp
+                                            @if(!empty($respon))
+                                            <td>{{$respon->content}}</td>
+                                            <td>{{$respon->admin->name}}</td>
+                                            @else
+                                            <td></td>
+                                            <td></td>
+                                            @endif
+                                            <td>      
 
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Response</h5>
-                                                                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                        <div class="modal-body">                                                        
-                                                            <div class="input-group input-group-dynamic">
-                                                                <textarea class="form-control" rows="5" placeholder="Say a few words about who you are or what you're working on." spellcheck="false"></textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn bg-gradient-primary">Save changes</button>
-                                                        </div>
-                                                    </div>
-                                                </div>                                            
+                                            @if(!empty($respon))
+                                            <a class="btn bg-gradient-secondary mb-0">Response Added</a>
+                                            @else
+                                            <a class="btn bg-gradient-success mb-0" href="/admin/{{$review->id}}/addResponse"><i class="material-icons text-sm">add</i>&nbsp;&nbsp;Add Response</a>
+                                            @endif
                                             </td>
                                         </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
+                                @endif
                             </div>
                         </div>
                     </div>

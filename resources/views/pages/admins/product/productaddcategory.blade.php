@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('title', 'Products')
 @section('page1', 'Products')
-@section('page2', 'Add Product Images')
+@section('page2', 'Add Product Category')
 
 @section('content')   
     <div class="main-panel">
@@ -21,34 +21,33 @@
                                     </div>
                                 </div>
                                 <div class="input-group input-group-static mb-4 pt-5">
-                                    <label for="" class="ms-0">Choose Category</label>
-                                    <!-- @php
-                                        $value_category = array();
-                                        foreach ($data as $datas) {
-                                            if(!empty($datas)){
-                                                array_push($value_category, $datas->category_name);
-                                            }
+                                @php
+                                    $value_category = array();
+                                    foreach ($data as $datas) {
+                                        if(!empty($datas)){
+                                            array_push($value_category, $datas->category_name);
                                         }
+                                    }
 
-                                        $data = array();
-                                        foreach($categories as $category){
-                                            array_push($data, $category->category_name);
-                                        }
-                                        
-                                        $result=array_diff($data,$value_category);
-                                    @endphp
+                                    $data = array();
+                                    foreach($categories as $category){
+                                        array_push($data, $category->category_name);
+                                    }
+                                    
+                                    $result=array_diff($data,$value_category);
+                                @endphp
 
-                                    <select class="form-control" name="category_id[]">
-                                        @foreach($result as $nilai)
-                                            <option value="{{$nilai}}">{{$nilai}}</option>   
-                                        @endforeach
-                                    </select>  -->
-
-                                    <select class="form-control" name="category_id[]">
-                                        @foreach($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->category_name}}</option>   
-                                        @endforeach
-                                    </select> 
+                                
+                                @if (count($result) > 0)  
+                                <label for="" class="ms-0">Choose Category</label>
+                                <select class="form-control" name="category_id">
+                                    @foreach($result as $nilai)
+                                        <option value="{{$nilai}}">{{$nilai}}</option>   
+                                    @endforeach
+                                </select>
+                                @else
+                                <label for="" class="ms-0">All Category Added</label>
+                                @endif 
 
                                 </div>                                                                             
                                 @if (count($errors) > 0)                                    
@@ -56,12 +55,14 @@
                                         <p class="text-danger">{{$error}}</p>
                                     @endforeach                                   
                                 @endif 
-                                <br>          
+                                <br>
+                                @if (count($result) > 0)  
                                 <div>
                                     <button class="btn btn-primary" type="submit">
                                         Submit
                                     </button>                                                                   
-                                </div>                          
+                                </div> 
+                                @endif                          
                             </div>
                         </form>
                     </div>
