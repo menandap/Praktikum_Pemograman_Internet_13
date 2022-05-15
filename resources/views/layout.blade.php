@@ -109,6 +109,7 @@
 							<i class="zmdi zmdi-search"></i>
 						</div>
 
+						@if (Auth::user())
 						@php
 
 						$user_id = auth()->user()->id;
@@ -116,7 +117,6 @@
 
 						@endphp
 
-						@if (Auth::user())
 						<div class="p-r-11 p-lr-11 icon-header-item cl2 hov-cl1 trans-04 icon-header-noti js-show-cart" data-notify="{{$cek}}">
 							<i class="zmdi zmdi-shopping-cart"></i>
 						</div>
