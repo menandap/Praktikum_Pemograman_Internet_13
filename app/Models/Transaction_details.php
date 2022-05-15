@@ -12,12 +12,13 @@ class Transaction_details extends Model
     protected $fillable = [
         'transaction_id',
         'product_id',
+        'stok',
         'qty',
         'discount',
         'selling_price'
     ];
 
-    public function products() { 
+    public function product(){
         return $this->belongsTo(Product::class);
     }
 

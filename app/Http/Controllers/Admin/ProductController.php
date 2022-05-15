@@ -14,6 +14,7 @@ use App\Models\Product;
 use App\Models\Discounts;
 use App\Models\Responses;
 use Redirect;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Pagination\Paginator;
@@ -39,6 +40,11 @@ class ProductController extends Controller
         $discount = DB::table('discounts')
             ->select('discounts.*')
             ->get();
+        // $tanggal = Carbon::now()->format('Y-m-d');
+        // $diskon = Discounts::where('start', '<=', $tanggal)->where('end', '>=', $tanggal)->get($id);
+        // $hapus = Discounts::where('product_id', '=', $id)->first();
+        // $hapus->delete();
+        // return $hapus;
         return view('pages.admins.product.productlist', compact('products','categories','discount'));
     }
 
@@ -157,6 +163,7 @@ class ProductController extends Controller
             ->join('product_categories', 'product_categories.id','=','product_category_details.category_id')
             ->select('products.*','product_categories.category_name')
             ->where($where)->first();
+        // $products = Product::where('id', '=', $id)->first();
         $image = DB::table('products')
             ->join('product_images', 'products.id', '=', 'product_images.product_id')
             ->select('product_images.*')
@@ -174,14 +181,23 @@ class ProductController extends Controller
             ->join('products', 'products.id', '=', 'product_stok_details.product_id')
             ->select('product_stoks.stok_name', 'product_stok_details.id', 'product_stok_details.stok')
             ->where('products.id', '=', $id)->get();
-        $reviews = DB::table('product_reviews')->join('users', 'users.id', '=', 'product_reviews.user_id')
-            ->select('product_reviews.*', 'users.name')->where('product_reviews.product_id', '=',$id)
-            ->orderby('product_reviews.id', 'desc')->get();
-        $responses = DB::table('responses')->select('responses.*')->get();
+        // $reviews = DB::table('product_reviews')->join('users', 'users.id', '=', 'product_reviews.user_id')
+        //     ->select('product_reviews.*', 'users.name')->where('product_reviews.product_id', '=',$id)
+        //     ->orderby('product_reviews.id', 'desc')->get();
         $discount = DB::table('discounts')
         ->select('discounts.*')
         ->get();
-        return view('pages.admins.product.productdetail', compact('products','reviews','responses', 'image','categories','id','discount', 'category_details','stoks'));
+        $tanggal = Carbon::now()->format('Y-m-d');
+        $reviews = Product_reviews::where('product_id', '=', $id)->paginate(5);
+        Paginator::useBootstrap();
+        $diskon = Discounts::where('product_id', '=', $id)->where('start', '<=', $tanggal)->where('end', '>=', $tanggal)->get();
+        if (count($diskon) < 1) {
+            $hapus = Discounts::where('product_id', '=', $id)->first();
+            if (!empty($hapus)){
+            $hapus->delete();
+            }
+        }
+        return view('pages.admins.product.productdetail', compact('products','reviews', 'image','categories','id','discount', 'category_details','stoks'));
     }
     
     // Images
@@ -289,21 +305,23 @@ class ProductController extends Controller
         ->join('products', 'products.id', '=', 'product_category_details.product_id')
         ->select('product_categories.category_name', 'product_category_details.id')
         ->where('products.id', '=', $id)->get();
+        $tes = 0;
         $products = Product::find($id);
         $categories = Product_categories::all();
-        return view('pages.admins.product.productaddcategory', compact('products','id','categories','data'));
+        return view('pages.admins.product.productaddcategory', compact('products','id','categories','data','tes'));
     }
 
     public function uploadCategory(Request $request, $id){ 
-        $kategoridata = $request->category_id;
-        foreach($kategoridata as $category){
-            $categoryDetail = new Product_category_details;
-            $categoryDetail->product_id = $id;
-            $categoryDetail->category_id = $category;
-            $categoryDetail->save();
-        }
+        $Product_categories = Product_categories::where('category_name', '=', $request->category_id)->first();
+
+        $detail = array(
+            'product_id' => $id,
+            'category_id' => $Product_categories->id
+        );
+
+        Product_category_details::create($detail);
         
-        return redirect()->route('admin.productdetail', $categoryDetail->product_id); 
+        return redirect()->route('admin.productdetail', $id); 
     }
 
     public function deleteCategory($id){
@@ -340,16 +358,27 @@ class ProductController extends Controller
             'stok' => 'required|numeric|min:0',
         ]);
 
-        $stokdata = $request->stok_id;
-        foreach($stokdata as $stock){
-            $stokDetail = new Product_stok_details;
-            $stokDetail->product_id = $id;
-            $stokDetail->stok_id = $stock;
-        }
+        // $stokdata = $request->stok_id;
+        // foreach($stokdata as $stock){
+        //     $stokDetail = new Product_stok_details;
+        //     $stokDetail->product_id = $id;
+        //     $stokDetail->stok_id = $stock;
+        // }
 
-        $stokDetail->stok = $request->stok;
-        $stokDetail->save();
-        return redirect()->route('admin.productdetail', $stokDetail->product_id); 
+        // $stokDetail->stok = $request->stok;
+        // $stokDetail->save();
+        
+        $Product_stoks = Product_stoks::where('stok_name', '=', $request->stok_id)->first();
+
+        $detail = array(
+            'product_id' => $id,
+            'stok_id' => $Product_stoks->id,
+            'stok' => $request->stok
+        );
+
+        Product_stok_details::create($detail);
+
+        return redirect()->route('admin.productdetail', $id); 
     }
 
     public function updateStok(Request $request, $id){
@@ -374,6 +403,25 @@ class ProductController extends Controller
         $stoks->delete();
         return redirect()->back(); 
     }
+
+    //Response
+
+    public function addResponse($id){
+        $reviews = Product_reviews::find($id);
+        // return $reviews;
+        return view('pages.admins.product.productaddresponse', compact('id','reviews'));
+    }
     
+    public function uploadResponse(Request $request, $id){ 
+        $detail = array(
+            'review_id' => $id,
+            'admin_id' => $request->admin_id,
+            'content' => $request->content
+        );
+        $Product_review = Product_reviews::where('id', '=', $id)->first();
+        Responses::create($detail);
+        
+        return redirect()->route('admin.productdetail',  $Product_review->product_id); 
+    }
     
 }

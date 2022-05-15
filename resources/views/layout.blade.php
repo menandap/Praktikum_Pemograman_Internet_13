@@ -48,6 +48,8 @@
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+	
 </head>
 <body class="animsition">
 
@@ -92,6 +94,12 @@
 							<li class="label1" data-label1="hot">
 								<a href="{{ route('cart') }}">Your Cart</a>
 							</li>
+
+							@if (Auth::user())
+							<li>
+								<a href="{{route('transaksi')}}">Transaction</a>
+							</li>
+							@endif
 						</ul>
 					</div>	
 
@@ -101,8 +109,15 @@
 							<i class="zmdi zmdi-search"></i>
 						</div>
 
+						@php
+
+						$user_id = auth()->user()->id;
+						$cek = App\Models\Carts::where('user_id', '=', $user_id)->where('status', '=', 'aktif')->count();								
+
+						@endphp
+
 						@if (Auth::user())
-						<div class="p-r-11 p-lr-11 icon-header-item cl2 hov-cl1 trans-04 icon-header-noti js-show-cart" data-notify="2">
+						<div class="p-r-11 p-lr-11 icon-header-item cl2 hov-cl1 trans-04 icon-header-noti js-show-cart" data-notify="{{$cek}}">
 							<i class="zmdi zmdi-shopping-cart"></i>
 						</div>
 						@else
@@ -121,7 +136,7 @@
 							<li class="active-menu">
 								<i class="fa fa-user"></i>
 								@if (Auth::user())
-								<!-- <span class="d-sm-inline d-none">Nama User</span> -->
+								<h4 class="d-sm-inline d-none">{{auth()->user()->name}}</h4>
 								<ul class="sub-menu">
 										<li class="scroll-to-section"><a href="{{ route('logout') }}" onclick="event.preventDefault();
 											document.getElementById('logout-form').submit()">Log out</a></li>

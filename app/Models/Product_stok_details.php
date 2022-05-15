@@ -15,7 +15,7 @@ class Product_stok_details extends Model
         'stok'
     ];
 
-    public function product_stoks() { 
+    public function stoks() { 
         return $this->belongsTo(Product_stoks::class, 'stok_id', 'id');
     }   
 

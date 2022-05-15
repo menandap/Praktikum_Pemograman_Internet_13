@@ -13,8 +13,8 @@ class Couriers extends Model
         'courier'
     ];
 
-    public function transactions() { 
-        return $this->hasMany(Transactions::class);
+    public function transaction() { 
+        return $this->hasMany(Transactions::class, "courier_id");
     }
 
 }

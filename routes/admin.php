@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\CourierController;
+use App\Http\Controllers\Admin\TransactionsController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware(['guest:admin'])->group(function () { //membatasi jika user akan mengakses route dibawah jadi alternatif nya /admin/home
@@ -20,6 +21,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
         Route::get('/home',[AuthController::class, 'dashboard']);
         Route::get('/dummy', [AuthController::class, 'dummy'])->name('dummy');
+
+        Route::get('/transactions', [TransactionsController::class, 'transaksi'])->name('adm-transaksi');
+        Route::get('/transactions/detail/{id}', [TransactionsController::class, 'transaksi_detail'])->name('adm-transaksi-detail');
+        Route::post('/transactions/status/{id}', [TransactionsController::class, 'transaksi_status'])->name('adm-transaksi-status');
+        Route::get('/transactions/bukti/{id}', [TransactionsController::class, 'transaksi_bukti'])->name('adm-transaksi-bukti');
+        
+        Route::get('/{id}/addResponse', [ProductController::class, 'addResponse']);
+        Route::post('/{id}/addResponse', [ProductController::class, 'uploadResponse']);
 
         Route::get('/categories', [CategoryController::class, 'index'])->name('category');
         Route::get('/categories/create', [CategoryController::class, 'create']);
