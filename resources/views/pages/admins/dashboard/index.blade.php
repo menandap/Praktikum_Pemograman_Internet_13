@@ -4,6 +4,17 @@
 @section('page2', 'Dashboard')
 
 @section('content')
+
+<script src="https://www.chartjs.org/dist/2.9.3/Chart.min.js"></script>
+<script src="https://www.chartjs.org/samples/latest/utils.js"></script>
+<style>
+    canvas {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    }
+</style>
+
 <div class="container-fluid py-4">
       <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -42,7 +53,7 @@
               </div>
               <div class="text-end pt-1">
                 <p class="text-sm mb-0 text-capitalize">Transaction</p>
-                <h4 class="mb-0">{{$transaction}}</h4>
+                <h4 class="mb-0">{{$allSales}}</h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">
@@ -63,56 +74,160 @@
           </div>
         </div>
       </div>
-      <div class="row mt-4">
-        <div class="col-lg-4 col-md-6 mt-4 mb-4">
-          <div class="card z-index-2 ">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-              <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
-                <div class="chart">
-                  <canvas id="chart-bars" class="chart-canvas" height="170"></canvas>
-                </div>
-              </div>
-            </div>
+
+      <div class="grid-margin stretch-card pt-5">
+        <div class="card">
             <div class="card-body">
-              <h6 class="mb-0 ">Website Views</h6>
-              <p class="text-sm ">Last Campaign Performance</p>
-              <hr class="dark horizontal">
+        <div id="container" style="width: 95%;">
+            <canvas id="canvas"></canvas>
             </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 mt-4 mb-4">
-          <div class="card z-index-2  ">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-              <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
-                <div class="chart">
-                  <canvas id="chart-line" class="chart-canvas" height="170"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <h6 class="mb-0 "> Daily Sales </h6>
-              <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) increase in today sales. </p>
-              <hr class="dark horizontal">
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 mt-4 mb-3">
-          <div class="card z-index-2 ">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-              <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
-                <div class="chart">
-                  <canvas id="chart-line-tasks" class="chart-canvas" height="170"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <h6 class="mb-0 ">Completed Tasks</h6>
-              <p class="text-sm ">Last Campaign Performance</p>
-              <hr class="dark horizontal">
-            </div>
-          </div>
+            <?php
+                $bulan = ["$january", "$february","$march","$april","$may","$june","$july","$august","$september","$october","$november","$december"];
+                //$bulans = ["0", "100","1","100","100","100","9","100","100","8","100","100"];
+                
+            ?>
+
+            <?php 
+                //misal ada 3 dealer
+                $transaksi = 1;
+                $k=0;
+                for($d=1; $d<=$transaksi;$d++){
+                //kemudian misal data dari bulan 1 hingga bulan 12
+                    for($b=1;$b<=12;$b++){
+                        $data[$d][$b] = $bulan[$k];
+                        $k++;
+                        
+                    }
+                }
+                // echo $data[1][5];
+               
+               
+                function random_color(){  
+                    return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+                }
+            ?>
+        
+        <script>
+        var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var color = Chart.helpers.color;
+        var barChartData = {
+            labels: MONTHS,
+            datasets: [
+                <?php 
+                        for($d=1;$d<=$transaksi;$d++){
+                            $color = random_color();
+                            ?>
+                            {
+                                label: '<?php echo "Transaksi success ";?>',
+                                backgroundColor: color('<?php echo $color;?>').alpha(0.5).rgbString(),
+                                borderColor: '<?php echo $color;?>',
+                                borderWidth: 1,
+                                data: [
+                                    <?php 
+                                        for($b=1;$b<=12;$b++){
+                                            echo $data[$d][$b].",";
+                                        }
+                                    ?>     
+                                ]
+                            },
+                            <?php 
+                        }
+                ?>
+            ]    
+        };
+        
+        window.onload = function() {
+            var ctx = document.getElementById('canvas').getContext('2d');
+            window.myBar = new Chart(ctx, {
+                type: 'bar',
+                data: barChartData,
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Grafik Transaksi bulanan'
+                    }
+                }
+        });
+        
+        };        
+        </script>
         </div>
       </div>
-     
     </div>
+    
+    <div class="grid-margin stretch-card pt-5">
+        <div class="card">
+            <div class="card-body">
+            <!-- OVERVIEW -->
+            <div class="panel panel-headline">
+                <div class="panel-heading ">
+                    <p class="panel-subtitle" style="font-weight: bold">Periode: {{ date('d-m-Y H:m:s', strtotime($now)) }}</p>
+                </div>
+                
+                <div class="panel-body mt-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="metric">
+                                <span class="icon">
+                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                </span>
+                                <p>
+                                    <span class="number">{{ $monthlySales }}</span>
+                                    <span class="title">Penjualan Bulanan</span>
+                                </p>
+                               
+                                <div class="weekly-summary">
+                                    <span class="number">Rp{{ number_format($incomeMonthly) }}</span>
+                                    <span class="info-label">Pendapatan Bulanan</span>
+                                </div>
+                             
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="metric">
+                                <span class="icon"><i class="fa fa-shopping-bag"></i></span>
+                                <p>
+                                    <span class="number">{{ $annualSales }}</span>
+                                    <span class="title">Penjualan Tahunan</span>
+                                    
+                                </p>
+
+                                <div class="weekly-summary ">
+                                    <span class="number">Rp{{ number_format($incomeAnnual) }}</span>
+                                    <span class="info-label">Pendapatan Tahunan</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="metric">
+                                <span class="icon"><i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                </span>
+                                <p>
+                                    <span class="number">{{ $allSales }}</span>
+                                    <span class="title">Total Penjualan</span>
+                                </p>
+                                <div class="weekly-summary">
+                                    <span class="number">Rp{{ number_format($incomeTotal) }}</span>
+                                    <span class="info-label">Total Pendapatan</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END OVERVIEW -->
+                </div>
+            </div>
+        </div>
+       
+      </div>
+    </div>
+
+    
 @endsection
