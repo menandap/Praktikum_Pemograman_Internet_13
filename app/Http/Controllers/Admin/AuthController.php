@@ -9,7 +9,10 @@ use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Transactions;
+use App\Models\Admin_notifications;
 use App\Models\Couriers;
+use Carbon\Carbon;
+
 
 class AuthController extends Controller
 {
@@ -31,11 +34,50 @@ class AuthController extends Controller
         if (!$courier) {
             $courier = 0;
         }
+
+        $now = Carbon::now('Asia/Makassar');
+        $allTransactions = Transactions::where('status', 'barang telah sampai di tujuan')->get();
+        //dd($allTransactions);
+        $allSales = Transactions::where('status','barang telah sampai di tujuan')->count();
+        $monthlySales = Transactions::where('status','barang telah sampai di tujuan')->whereMonth('created_at', $now->month)->count();
+        $annualSales = Transactions::where('status','barang telah sampai di tujuan')->whereYear('created_at', $now->year)->count();
+        $monthlyTransactions = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', $now->month)->get();
+        $annualTranscations = Transactions::where('status', 'barang telah sampai di tujuan')->whereYear('created_at', $now->year)->get();
+        //dd($allTransactions);
+        $incomeTotal = 0;
+        $incomeMonthly = 0;
+        $incomeAnnual = 0;
+
+        foreach ($allTransactions as $transaction) {
+            $incomeTotal+=$transaction->total;
+        }
+
+        
+        foreach ($monthlyTransactions as $monthly) {
+            $incomeMonthly+=$monthly->total;
+        }
+
+        foreach ($annualTranscations as $annual) {
+            $incomeAnnual+=$annual->total;
+        }
+
+        
+        $january = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '01')->count();
+        $february = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '02')->count();
+        $march = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '03')->count();
+        $april = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '04')->count();
+        $may = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '05')->count();
+        $june = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '06')->count();
+        $july = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '07')->count();
+        $august = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '08')->count();
+        $september = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '09')->count();
+        $october = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '10')->count();
+        $november = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '11')->count();
+        $december = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '12')->count();
+
         return view('pages.admins.dashboard.index', compact(
-            'user',
-            'product',
-            'transaction',
-            'courier'
+            'user','product','transaction','courier',
+            'now', 'allSales', 'monthlySales', 'annualSales', 'incomeTotal', 'incomeMonthly', 'incomeAnnual', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'
         ));
     }
     
@@ -65,5 +107,22 @@ class AuthController extends Controller
         Auth::guard('admin')->logout();
 
         return redirect()->route('admin.dashboard');
+    }
+
+    public function admin_notif($id) 
+    {
+        $notification = Admin_notifications::find($id);
+        $notif = json_decode($notification->data);
+        $date = Carbon::now('Asia/Makassar');
+        $baca = Admin_notifications::find($id);
+        $baca->read_at = $date;
+        $baca->update();
+
+        if ($notif->category == 'review' ) {
+            return redirect()->route('admin.productdetail',$notif->id);
+        } else{
+            return redirect()->route('admin.adm-transaksi-detail',$notif->id);
+        } 
+        
     }
 }

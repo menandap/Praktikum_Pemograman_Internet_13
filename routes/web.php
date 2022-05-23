@@ -11,6 +11,7 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [AuthController::class, 'homepage'])->middleware('auth')->name('homepage');
+Route::get('user/{id}',[AuthController::class,'user_notif'])->name('notification');
 
 Route::get('/product', [HomeController::class, 'product'])->name('homeproduct');
 Route::get('/product/{id}', [HomeController::class, 'detail_product'])->name('homeproductdetail');
@@ -19,6 +20,7 @@ Route::get('/usr-product/{id}', [AuthController::class, 'detail_product'])->midd
 
 Route::get('/usr-cart', [AuthController::class, 'cart'])->middleware('auth')->name('cart');
 Route::post('usr-cart/{id}/add', [AuthController::class, 'cart_add'])->name('keranjang-tambah');
+Route::post('usr-cart-buy/{id}/add', [AuthController::class, 'cart_buy'])->name('keranjang-beli');
 Route::get('/usr-cart/delete/{id}', [AuthController::class, 'cart_delete'])->name('keranjang-hapus');
 
 Route::post('/usr-cart/address', [AuthController::class, 'cart_address'])->name('keranjang-alamat');

@@ -13,6 +13,7 @@ use App\Models\Product_reviews;
 use App\Models\Product;
 use App\Models\Discounts;
 use App\Models\Responses;
+use App\Models\User;
 use Redirect;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -420,6 +421,19 @@ class ProductController extends Controller
         );
         $Product_review = Product_reviews::where('id', '=', $id)->first();
         Responses::create($detail);
+
+        //Notif User
+        $review = DB::Table('product_reviews')->where('id',$id)->value('user_id');
+        $product_id= DB::Table('product_reviews')->where('id',$id)->first();
+        $user = User::find($review);
+        $data = [
+            'nama'=> 'Admin',
+            'message'=>'review anda direspon!',
+            'id'=> $product_id->product_id,
+            'category' => 'review'
+        ];
+        $data_encode = json_encode($data);
+        $user->createNotifUser($data_encode);
         
         return redirect()->route('admin.productdetail',  $Product_review->product_id); 
     }

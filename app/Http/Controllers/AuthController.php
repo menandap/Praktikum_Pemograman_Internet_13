@@ -12,9 +12,12 @@ use App\Models\Product;
 use App\Models\Discounts;
 use App\Models\Responses;
 use App\Models\Carts;
+use App\Models\User;
+use App\Models\Admin;
 use App\Models\Couriers;
 use App\Models\Transactions;
 use App\Models\Transaction_details;
+use App\Models\User_notifications;
 use Redirect;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -129,6 +132,39 @@ class AuthController extends Controller
             Carts::create($insert_cart);
         }
         return redirect()->back();
+
+        // switch ($request->input('action')) {
+        //     case 'cart':
+        //         return redirect()->back();
+    
+        //     case 'buy':
+        //         return redirect()->route('cart');
+        //     }
+        // $request->tes;
+        // return  $request;
+
+    }
+
+    public function cart_buy($id, Request $request)
+    {
+        $user_id = auth()->user()->id;
+        $cart = Carts::where('user_id', '=', $user_id)->where('product_id', '=', $id)->where('stok', '=', $request->stok)->where('status', '=', 'aktif')->get();
+        if (count($cart) > 0) {
+            foreach ($cart as $carts) {
+                $carts->qty = $carts->qty + $request->jumlah_keranjang;
+                $carts->save();
+            }
+        } else {
+            $insert_cart = array(
+                'user_id' => $user_id,
+                'product_id' => $id,
+                'stok' => $request->stok,
+                'qty' => $request->jumlah_keranjang,
+                'status' => "aktif"
+            );
+            Carts::create($insert_cart);
+        }
+        return redirect()->route('cart');
     }
 
     public function cart_delete($id)
@@ -312,6 +348,29 @@ class AuthController extends Controller
             Transaction_details::create($transaksi_detail);
             $i++;
         }
+
+      //----------------------------------------------------------------------------
+      $user=auth()->user();
+      $data_user=User::find($user->id);
+      $admin = Admin::find(1);
+      $data = [
+          'nama'=> $user->name,
+          'message'=>'membeli product!',
+          'id'=> $transaction->id,
+          'category' => 'transaction'
+      ];
+      $data_encode = json_encode($data);
+      $admin->createNotif($data_encode);
+      //Notif Admin-------------------------------------------------------------------
+      $data = [
+          'nama'=> 'Admin',
+          'message'=>'Upload Bukti Pembayaran!',
+          'id'=> $transaction->id,
+          'category' => 'transcation'
+      ];
+      $data_encode = json_encode($data);
+      $data_user->createNotifUser($data_encode);
+      //Notif User-------------------------------------------------------------------
         return redirect()->route('transaksi-detail', $transaction->id);
     }
 
@@ -376,6 +435,20 @@ class AuthController extends Controller
 
         $image->move(public_path('proof_of_payment'), $image_name);
 
+         //notif admin---------------------------------------
+         $user=auth()->user();
+         //$user_data=User::find($user->id);
+         $admin = Admin::find(1);
+         $data = [
+            'nama'=> $user->name,
+            'message'=>'Verifikasi Pembayaran!',
+            'id'=> $id,
+            'category' => 'Transcation'
+        ];
+        $data_encode = json_encode($data);
+        $admin->createNotif($data_encode);
+        //notif admin---------------------------------------
+
         return redirect()->back();
     }
 
@@ -384,6 +457,34 @@ class AuthController extends Controller
         $transaction = Transactions::find($id);
         $transaction->status = "transaksi dibatalkan";
         $transaction->save();
+
+         //notif admin---------------------------------------
+         $user=auth()->user();
+         //$user_data=User::find($user->id);
+         $admin = Admin::find(1);
+         $data = [
+            'nama'=> $user->name,
+            'message'=>'Transaksi Dibatalkan!',
+            'id'=> $id,
+            'category' => 'canceled'
+        ];
+        $data_encode = json_encode($data);
+        $admin->createNotif($data_encode);
+        //notif admin---------------------------------------
+ 
+         //notif user---------------------------------------
+         $user=auth()->user();
+         $user_data = User::find($user->id);
+         $admin = Admin::find(1);
+         $data = [
+            'nama'=> 'Admin',
+            'message'=>'Transaksi Berhasil Dibatalkan!',
+            'id'=> $id,
+            'category' => 'canceled'
+        ];
+        $data_encode = json_encode($data);
+        $user_data->createNotifUser($data_encode);
+        //notif user---------------------------------------
 
         return redirect()->back();
     }
@@ -421,7 +522,40 @@ class AuthController extends Controller
             $product->save();
         }
 
+        $user = auth()->user();
+        $data_user = User::find($user->id);
+
+          //----------------------------------------------------------------------------
+          $admin = Admin::find(1);
+          $data = [
+              'nama'=> $user->name,
+              'message'=>'seseorang mereview product!',
+              'id'=> $id,
+              'category' => 'review'
+          ];
+          $data_encode = json_encode($data);
+          $admin->createNotif($data_encode);
+
 
         return redirect()->route('detail_product',  $id); 
     }
+
+    public function user_notif($id) 
+    {
+        $notification = User_notifications::find($id);
+        $notif = json_decode($notification->data);
+        
+        $date = Carbon::now('Asia/Makassar');
+        $baca= User_notifications::find($id);
+        $baca->read_at =$date;
+        $baca->update();
+
+        if ($notif->category == 'review') {
+            return redirect()->route('detail_product',$notif->id);
+        } else{
+            return redirect()->route('transaksi-detail',$notif->id);
+        } 
+     
+    }
+
 }

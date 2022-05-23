@@ -54,11 +54,22 @@ class Admin extends Authenticatable
 
     
     public function admin_notifications() {
-        return $this->hasMany(Admin_notifications::class);
-      }
-  
-      public function response() {
-        return $this->hasMany(Responses::class);
-      }
+    return $this->hasMany(Admin_notifications::class);
+    }
+
+    public function response() {
+    return $this->hasMany(Responses::class);
+    }
+
+    public function createNotif($data)
+    {
+        $notif = new Admin_notifications();
+        $notif->type = 'App\Notifications\ProducNotification';
+        $notif->notifiable_type = 'App\Models\Admin';
+        $notif->notifiable_id = $this->id;
+        $notif->data = $data;
+        $notif->read_at = null;
+        $notif->save();
+    }
 
 }

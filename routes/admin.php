@@ -21,6 +21,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
         Route::get('/home',[AuthController::class, 'dashboard']);
         Route::get('/dummy', [AuthController::class, 'dummy'])->name('dummy');
+        Route::get('admin/{id}', [AuthController::class,'admin_notif'])->name('notification');
 
         Route::get('/transactions', [TransactionsController::class, 'transaksi'])->name('adm-transaksi');
         Route::get('/transactions/detail/{id}', [TransactionsController::class, 'transaksi_detail'])->name('adm-transaksi-detail');

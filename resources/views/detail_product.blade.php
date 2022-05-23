@@ -152,27 +152,11 @@
 							</div>	 -->
 
 							<p class="stext-102 cl3 p-t-5">Pilih Stok</p>
-							<!-- <div class="size-204 respon6-next">
-								<div class="rs1-select2 bor8 bg0">
-									<select class="js-select2" name="stok">
-										@forelse($stoks as $stok) 
-											<option value="{{$stok->stok_name}}">Size {{ $stok->stok_name }} (Stok : {{ $stok->stok }})</option>
-										@empty
-											<option>Stok Kosong</option>
-										@endforelse  
-									</select>
-									<div class="dropDownSelect2"></div>
-								</div>
-							</div> -->
+						
 							<form id="addcartform" action="{{ route('keranjang-tambah', $product->id) }}" method="POST"  enctype="multipart/form-data">
 								@csrf
 								<input type="number" class="form-control" value="1" id="keranjang" name="jumlah_keranjang" hidden>
-								<!-- <input type="number" class="form-control" value="1" id="" name="stok" hidden> -->
-								<!-- <select class="form-control" name="stok_name">
-								@foreach($stoks as $stok)
-                                    <option value="{{$stok->stok_name}}">Size {{ $stok->stok_name }} (Stok : {{ $stok->stok }})</option>   
-                                @endforeach
-								</select> -->
+							
 								<div class="size-204 respon6-next">
 									<div class="rs1-select2 bor8 bg0">
 										<select class="js-select2" name="stok">
@@ -185,7 +169,6 @@
 										<div class="dropDownSelect2"></div>
 									</div>
 								</div>
-							</form>
 
 							<div>
 							<p class="stext-102 cl3 p-t-10">Atur Jumlah</p>
@@ -205,21 +188,24 @@
 							</div>
 
 							@if (Auth::user())
-							<button class="stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04" href="{{route('keranjang-tambah', $product->id)}}"
+							<button class="stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"  name="tes" value="cart"
 								onclick="event.preventDefault();
 									document.getElementById('addcartform').submit();">
 								Add to cart
 							</button>
 
-							<!-- <form class="d-grid" method="post" action="{{route('keranjang-tambah', $product->id)}}" enctype="multipart/form-data">
-								<button class="stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-									Add to cart
-								</button>
-							</form> -->
+							<!-- <button class="stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+								Buy Now
+							</button> -->
 
-								<button class="stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-									Buy Now
-								</button>
+							<button class="stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04" name="tes" value="buy"
+								onclick="event.preventDefault();
+									document.getElementById('addcartform').submit();">
+								Buy Now
+							</button>
+
+							</form>
+
 							</div>
 							@else
 							<a href="{{route('login')}}">

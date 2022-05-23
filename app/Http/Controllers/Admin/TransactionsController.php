@@ -59,14 +59,65 @@ class TransactionsController extends Controller
         $transaction = Transactions::find($id);
         $transaction_detail = Transaction_details::where('transaction_id', '=', $id)->get();
         $tanggal = Carbon::now();
+        $user = User::find($transaction->user_id);
         if ($transaction->status == "menunggu bukti pembayaran" && $transaction->timeout < $tanggal) {
             $transaction->status = "transaksi expired";
             $transaction->save();
+            return view('pages.admins.transactions.transactiondetail', compact('transaction', 'transaction_detail'));
+        } else if ($transaction->status == "sudah terverifikasi") {
+
+            $data = [
+                'nama'=> 'Admin',
+                'message'=>'sudah tervirifikasi',
+                'id'=> $id,
+                'category' => 'transaction'
+            ];
+
+            $data_encode = json_encode($data);
+            $user->createNotifUser($data_encode);
+
             return view('pages.admins.transactions.transactiondetail', compact('transaction', 'transaction_detail'));
         } else if ($transaction->status == "menunggu bukti pembayaran" && $transaction->timeout >= $tanggal) {
             $date = Carbon::createFromFormat('Y-m-d H:s:i', $transaction->timeout);
             $interval = $tanggal->diffAsCarbonInterval($date);
             return view('pages.admins.transactions.transactiondetail', compact('transaction', 'interval', 'transaction_detail'));
+        } else if ($transaction->status == "transaksi dibatalkan") {
+
+            $data = [
+                'nama'=> 'Admin',
+                'message'=>'transaksi dibatalkan',
+                'id'=> $id,
+                'category' => 'transaction'
+            ];
+
+            $data_encode = json_encode($data);
+            $user->createNotifUser($data_encode);
+
+            return view('pages.admins.transactions.transactiondetail', compact('transaction', 'transaction_detail'));
+        }else if ($transaction->status == "barang dalam pengiriman") {
+
+            $data = [
+                'nama'=> 'Admin',
+                'message'=>'barang dikirim',
+                'id'=> $id,
+                'category' => 'transaction'
+            ];
+
+            $data_encode = json_encode($data);
+            $user->createNotifUser($data_encode);
+
+            return view('pages.admins.transactions.transactiondetail', compact('transaction', 'transaction_detail'));
+        }else if($transaction->status == "barang telah sampai di tujuan"){
+            $data = [
+                'nama'=> 'Admin',
+                'message'=>'barang telah sampai tujuan',
+                'id'=> $id,
+                'category' => 'transaction'
+            ];
+
+            $data_encode = json_encode($data);
+            $user->createNotifUser($data_encode);
+            return view('pages.admins.transactions.transactiondetail', compact('transaction', 'transaction_detail'));   
         } else {
             return view('pages.admins.transactions.transactiondetail', compact('transaction', 'transaction_detail'));
         }
