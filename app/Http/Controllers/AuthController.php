@@ -495,6 +495,20 @@ class AuthController extends Controller
         $transaction->status = "barang telah sampai di tujuan";
         $transaction->save();
 
+        //notif admin---------------------------------------
+        $user=auth()->user();
+        //$user_data=User::find($user->id);
+        $admin = Admin::find(1);
+        $data = [
+           'nama'=> $user->name,
+           'message'=>'Barang Telah Sampai ke Pelanggan!',
+           'id'=> $id,
+           'category' => 'canceled'
+       ];
+       $data_encode = json_encode($data);
+       $admin->createNotif($data_encode);
+       //notif admin---------------------------------------
+
         return redirect()->back();
     }
 

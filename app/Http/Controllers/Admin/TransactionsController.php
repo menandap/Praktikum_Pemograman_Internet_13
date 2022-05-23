@@ -110,7 +110,7 @@ class TransactionsController extends Controller
         }else if($transaction->status == "barang telah sampai di tujuan"){
             $data = [
                 'nama'=> 'Admin',
-                'message'=>'barang telah sampai tujuan',
+                'message'=>'trx sukses, silahkan review',
                 'id'=> $id,
                 'category' => 'transaction'
             ];
