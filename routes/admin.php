@@ -19,7 +19,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::middleware(['auth:admin'])->group(function () {
         Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
-        Route::get('/home',[AuthController::class, 'dashboard']);
+        Route::get('/home',[AuthController::class, 'dashboard'])->name('home');
         Route::get('/dummy', [AuthController::class, 'dummy'])->name('dummy');
         Route::get('admin/{id}', [AuthController::class,'admin_notif'])->name('notification');
 

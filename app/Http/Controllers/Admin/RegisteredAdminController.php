@@ -34,6 +34,6 @@ class RegisteredAdminController extends Controller
             'profile_image' => $path,
         ]));
 
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
 }
