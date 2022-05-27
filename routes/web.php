@@ -1,13 +1,17 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 
 
 // Route::prefix('user')->name('user.')->group(function () {
    
 // });
+
+
+Auth::routes(['verify' => true]);
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [AuthController::class, 'homepage'])->middleware('auth')->name('homepage');
@@ -43,7 +47,7 @@ Route::post('/{id}/addReview', [AuthController::class, 'uploadReview'])->name('a
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
 
-Route::resource('admin', 'AdminController');
-Route::resource('user', 'UserController');
-Route::resource('productcontroller', 'ProductCategoriesController');
+// Route::resource('admin', 'AdminController');
+// Route::resource('user', 'UserController');
+// Route::resource('productcontroller', 'ProductCategoriesController');
 
