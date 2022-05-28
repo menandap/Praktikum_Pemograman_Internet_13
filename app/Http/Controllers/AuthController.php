@@ -364,7 +364,7 @@ class AuthController extends Controller
       //Notif Admin-------------------------------------------------------------------
       $data = [
           'nama'=> 'Admin',
-          'message'=>'Upload Bukti Pembayaran!',
+          'message'=>'Upload Bukti!',
           'id'=> $transaction->id,
           'category' => 'transcation'
       ];
@@ -492,7 +492,7 @@ class AuthController extends Controller
     public function transaction_confir($id)
     {
         $transaction = Transactions::find($id);
-        $transaction->status = "barang telah sampai di tujuan";
+        $transaction->status = "barang telah sampai";
         $transaction->save();
 
         //notif admin---------------------------------------

@@ -107,7 +107,7 @@ class TransactionsController extends Controller
             $user->createNotifUser($data_encode);
 
             return view('pages.admins.transactions.transactiondetail', compact('transaction', 'transaction_detail'));
-        }else if($transaction->status == "barang telah sampai di tujuan"){
+        }else if($transaction->status == "barang telah sampai"){
             $data = [
                 'nama'=> 'Admin',
                 'message'=>'trx sukses, silahkan review',
