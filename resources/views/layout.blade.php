@@ -126,32 +126,6 @@
 						</a>
 						@endif
 
-						@php $user_notifikasi = App\Models\User_notifications::where('notifiable_id', Auth::user()->id)->where('read_at', NULL)->orderBy('created_at','desc')->get(); @endphp
-						@php $user_unRead = App\Models\User_notifications::where('notifiable_id', Auth::user()->id)->where('read_at', NULL)->orderBy('created_at','desc')->count(); @endphp
-						
-						<ul class="main-menu">
-							<li class="active-menu">
-								<i class="fa fa-bell p-r-11 p-lr-11 icon-header-item cl2 hov-cl1 trans-04 icon-header-noti" data-notify="{{$user_unRead}}"></i>
-
-								@if (Auth::user())
-								<ul class="sub-menu">
-								@forelse ($user_notifikasi as $notifikasi)
-								@php $notif = json_decode($notifikasi->data); @endphp
-								<li>
-									<a href="{{ route('notification', $notifikasi->id) }}" class="dropdown-item btnunNotif" data-num=""><small>[{{ $notif->nama }}] {{ $notif->message }}</small></a>
-								</li>
-								@empty
-									<li>
-									<a href="#" class="dropdown-item btnunNotif" data-num="" >
-										&nbsp;<small>Tidak ada notifikasi</small>
-									</a>
-									</li>
-								@endforelse
-								</ul>
-								@endif
-							</li>
-						</ul>
-
 						<ul class="icon-header-item main-menu">
 							<li class="active-menu">
 								<i class="fa fa-user"></i>
@@ -171,6 +145,34 @@
 										<li class="submenu"><a href="{{route('login')}}">Login</a></li>
 								</ul>
 								@endif
+							</li>
+						</ul>
+
+						<ul class="main-menu">
+							<li class="active-menu">
+							@if (Auth::user())	
+								@php $user_notifikasi = App\Models\User_notifications::where('notifiable_id', Auth::user()->id)->where('read_at', NULL)->orderBy('created_at','desc')->get(); @endphp
+								@php $user_unRead = App\Models\User_notifications::where('notifiable_id', Auth::user()->id)->where('read_at', NULL)->orderBy('created_at','desc')->count(); @endphp
+
+								<i class="fa fa-bell icon-header-item cl2 hov-cl1 trans-04 icon-header-noti" data-notify="{{$user_unRead}}"></i>
+
+
+								<ul class="sub-menu">
+								@forelse ($user_notifikasi as $notifikasi)
+								@php $notif = json_decode($notifikasi->data); @endphp
+								<li>
+									<a href="{{ route('notification', $notifikasi->id) }}" class="dropdown-item btnunNotif" data-num=""><small>[{{ $notif->nama }}] {{ $notif->message }}</small></a>
+								</li>
+								@empty
+									<li>
+									<a href="#" class="dropdown-item btnunNotif" data-num="" >
+										&nbsp;<small>Tidak ada notifikasi</small>
+									</a>
+									</li>
+								@endforelse
+								</ul>
+							@else 
+							@endif
 							</li>
 						</ul>
 
