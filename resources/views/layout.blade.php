@@ -72,11 +72,11 @@
 					<div class="menu-desktop">
 						<ul class="main-menu">
 							@if (Auth::user())
-							<li class="active-menu">
+							<li>
 								<a href="{{ route('homepage') }}">Home</a>
 							</li>
 							@else
-							<li class="active-menu">
+							<li>
 								<a href="{{ route('home') }}">Home</a>
 							</li>
 							@endif
@@ -117,9 +117,9 @@
 
 						@endphp
 
-						<div class="p-r-11 p-lr-11 icon-header-item cl2 hov-cl1 trans-04 icon-header-noti js-show-cart" data-notify="{{$cek}}">
+						<a href="{{ route('cart') }}" class="p-r-11 p-lr-11 icon-header-item cl2 hov-cl1 trans-04 icon-header-noti js-show-cart" data-notify="{{$cek}}">
 							<i class="zmdi zmdi-shopping-cart"></i>
-						</div>
+						</a>
 						@else
 						<a href="{{route('login')}}" class="p-r-11 p-lr-11 dis-block icon-header-item cl2 hov-cl1 trans-04 icon-header-noti" data-notify="0">
 							<i class="zmdi zmdi-shopping-cart"></i>

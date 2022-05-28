@@ -75,9 +75,24 @@ class AuthController extends Controller
         $november = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '11')->count();
         $december = Transactions::where('status', 'barang telah sampai di tujuan')->whereMonth('created_at', '12')->count();
 
+        $b_january = Transactions::where('status', 'transaksi dibatalkan')->whereMonth('created_at', '01')->count();
+        $b_february = Transactions::where('status', 'transaksi dibatalkan')->whereMonth('created_at', '02')->count();
+        $b_march = Transactions::where('status', 'transaksi dibatalkan')->whereMonth('created_at', '03')->count();
+        $b_april = Transactions::where('status', 'transaksi dibatalkan')->whereMonth('created_at', '04')->count();
+        $b_may = Transactions::where('status', 'transaksi dibatalkan')->whereMonth('created_at', '05')->count();
+        $b_june = Transactions::where('status', 'transaksi dibatalkan')->whereMonth('created_at', '06')->count();
+        $b_july = Transactions::where('status', 'transaksi dibatalkan')->whereMonth('created_at', '07')->count();
+        $b_august = Transactions::where('status', 'transaksi dibatalkan')->whereMonth('created_at', '08')->count();
+        $b_september = Transactions::where('status', 'transaksi dibatalkan')->whereMonth('created_at', '09')->count();
+        $b_october = Transactions::where('status', 'transaksi dibatalkan')->whereMonth('created_at', '10')->count();
+        $b_november = Transactions::where('status', 'transaksi dibatalkan')->whereMonth('created_at', '11')->count();
+        $b_december = Transactions::where('status', 'transaksi dibatalkan')->whereMonth('created_at', '12')->count();
+
         return view('pages.admins.dashboard.index', compact(
             'user','product','transaction','courier',
-            'now', 'allSales', 'monthlySales', 'annualSales', 'incomeTotal', 'incomeMonthly', 'incomeAnnual', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'
+            'now', 'allSales', 'monthlySales', 'annualSales', 'incomeTotal', 'incomeMonthly', 'incomeAnnual', 
+            'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december',
+            'b_january', 'b_february', 'b_march', 'b_april', 'b_may', 'b_june', 'b_july', 'b_august', 'b_september', 'b_october', 'b_november', 'b_december'
         ));
     }
     
